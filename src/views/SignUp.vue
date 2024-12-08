@@ -3,26 +3,20 @@ import { ref, onMounted } from 'vue'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import axios from 'axios'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/auth/store';
 
 // TODO: Переписать валидацию на Vee Validate
+
+const authStore = useAuthStore();
 
 // const username = ref('')
 const email = ref('')
 const password = ref('')
 const router = useRouter()
 
-const register = () => {
-  console.log(email, password)
-  const auth = getAuth()
-  createUserWithEmailAndPassword(auth, email.value, password.value)
-    .then((data) => {
-      console.log(data)
-      router.push('/')
-    })
-    .catch((error) => {
-      console.error(error)
-    })
-}
+const signup = async () => {
+  await authStore.signup({ email: email.value, password: password.value })
+};
 </script>
 
 <template>
